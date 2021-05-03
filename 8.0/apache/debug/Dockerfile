@@ -1,4 +1,4 @@
-FROM pimcore/pimcore:PHP8.0-apache
+FROM pimcore/pimcore:PHP8.0-apache-debug
 
 LABEL maintainer="devs@alpin11.com"
 
