@@ -13,4 +13,4 @@ RUN composer self-update
 # add aliases
 RUN echo 'alias cache:clear="bin/console cache:clear && chown www-data: . -R "' >> /root/.bashrc
 RUN echo 'alias pimcore:cache:clear="bin/console cache:clear"' >> /root/.bashrc
-
+RUN echo 'alias composer:update="composer clearcache && composer update"' >> /root/.bashrc
