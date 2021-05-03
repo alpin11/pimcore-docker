@@ -10,6 +10,7 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -; \
 # update composer to latest version
 RUN composer self-update
 
+# add aliases
 RUN echo 'alias cache:clear="bin/console cache:clear && chown www-data: . -R "' >> ~/.bashrc
 RUN echo 'alias pimcore:cache:clear="bin/console cache:clear"' >> ~/.bashrc
 RUN source ~/.bashrc
