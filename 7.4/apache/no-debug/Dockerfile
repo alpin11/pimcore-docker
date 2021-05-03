@@ -1,5 +1,7 @@
 FROM pimcore/pimcore:PHP7.4-apache-debug
 
+LABEL maintainer="devs@alpin11.com"
+
 # install mjml on global
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -; \
             apt-get install -y nodejs; \
