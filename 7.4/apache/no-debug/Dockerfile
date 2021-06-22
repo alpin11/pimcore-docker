@@ -14,3 +14,5 @@ RUN composer self-update
 RUN echo 'alias cache:clear="bin/console cache:clear && chown www-data: . -R "' >> /root/.bashrc
 RUN echo 'alias pimcore:cache:clear="bin/console cache:clear"' >> /root/.bashrc
 RUN echo 'alias composer:update="composer clearcache && composer update"' >> /root/.bashrc
+RUN echo 'alias fix-phars="php -r \"phar = new Phar(\"vendor/phpstan/phpstan/phpstan.phar\"); $phar->extractTo(\"vendor/phpstan/phpstan/phpstan.tmp\");\" && rm vendor/phpstan/phpstan/{phpstan,phpstan.phar} && mv vendor/phpstan/phpstan/{phpstan.tmp,phpstan}"' >> /root/.bashrc
+
