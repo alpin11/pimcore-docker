@@ -136,3 +136,4 @@ RUN echo 'alias pimcore:cache:clear="bin/console cache:clear"' >> /root/.bashrc
 RUN echo 'alias composer:update="composer clearcache && composer update"' >> /root/.bashrc
 RUN echo 'alias fix-phars="php -r \"$phar = new Phar(\"vendor/phpstan/phpstan/phpstan.phar\"); $phar->extractTo(\"vendor/phpstan/phpstan/phpstan.tmp\");\" && rm vendor/phpstan/phpstan/{phpstan,phpstan.phar} && mv vendor/phpstan/phpstan/{phpstan.tmp,phpstan}"' >> /root/.bashrc
 RUN echo 'alias ll="ls -la"' >> /root/.bashrc
+RUN echo 'alias phpx="php -dxdebug.start_with_request=yes"' >> /root/.bashrc
