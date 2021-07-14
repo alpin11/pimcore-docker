@@ -120,6 +120,10 @@ RUN apt-get update; \
 ENV PHP_DEBUG 1
 ENV PHP_IDE_CONFIG serverName=localhost
 
+#- ./.docker/php/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini
+COPY php-ini-overrides.ini /usr/local/etc/php/conf.d/99-overrides.ini
+
+# ENTRYPOINT
 COPY entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
