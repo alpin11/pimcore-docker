@@ -117,7 +117,7 @@ RUN apt-get update; \
     apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* ~/.composer;
 
 # ENABLE DEBUG MODE in entrypoint.sh
-ENV PHP_DEBUG 1
+# ENV PHP_DEBUG 1 - should be set by enviroment variable of docker-compose.yml
 ENV PHP_IDE_CONFIG serverName=localhost
 
 #- ./.docker/php/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini
