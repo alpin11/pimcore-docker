@@ -8,7 +8,7 @@ RUN set -eux; \
     echo "deb http://deb.debian.org/debian $(lsb_release -sc)-backports main" > /etc/apt/sources.list.d/backports.list; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        autoconf automake libtool nasm make pkg-config libz-dev build-essential openssl g++ \
+        autoconf automake libtool nasm acl make pkg-config libz-dev build-essential openssl g++ \
         zlib1g-dev libicu-dev libbz2-dev libc-client-dev \
         libkrb5-dev libxml2-dev libxslt1.1 libxslt1-dev locales locales-all \
         ffmpeg html2text ghostscript libreoffice pngcrush jpegoptim exiftool poppler-utils git wget \
