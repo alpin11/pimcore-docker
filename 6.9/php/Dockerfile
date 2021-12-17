@@ -8,7 +8,7 @@ RUN set -eux; \
     echo "deb http://deb.debian.org/debian $(lsb_release -sc)-backports main" > /etc/apt/sources.list.d/backports.list; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        autoconf automake libtool nasm acl make pkg-config libz-dev build-essential openssl g++ \
+        autoconf automake libtool acl nasm make pkg-config libz-dev build-essential openssl g++ \
         zlib1g-dev libicu-dev libbz2-dev libc-client-dev \
         libkrb5-dev libxml2-dev libxslt1.1 libxslt1-dev locales locales-all \
         ffmpeg html2text ghostscript libreoffice pngcrush jpegoptim exiftool poppler-utils git wget \
@@ -40,6 +40,8 @@ RUN set -eux; \
     docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
     docker-php-ext-install imap; \
     docker-php-ext-enable imap; \
+    docker-php-ext-install sockets; \
+    docker-php-ext-enable sockets; \
     \
     cd ~; \
     \
@@ -106,6 +108,12 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_MEMORY_LIMIT -1
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# MYSQL client
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8C718D3B5072E1F5
+RUN echo "deb http://repo.mysql.com/apt/debian/ buster mysql-8.0" > /etc/apt/sources.list.d/mysql.list
+RUN apt-get update; \
+    apt-get install -y --no-install-recommends mysql-client
+
 # XDEBUG
 RUN apt-get update; \
     apt-get install -y --no-install-recommends \
@@ -116,7 +124,7 @@ RUN apt-get update; \
     apt-get remove -y autoconf automake libtool nasm make pkg-config libz-dev build-essential g++; \
     apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* ~/.composer;
 
-# BLACKFIRE
+# BLACKFIRE PROBE
 RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
     && architecture=$(case $(uname -m) in i386 | i686 | x86) echo "i386" ;; x86_64 | amd64) echo "amd64" ;; aarch64 | arm64 | armv8) echo "arm64" ;; *) echo "amd64" ;; esac) \
     && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/$architecture/$version \
@@ -124,6 +132,20 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
     && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
     && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+
+# BLACKFIRE CLI
+RUN mkdir -p /tmp/blackfire \
+    && architecture=$(uname -m) \
+    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/cli/linux/$architecture | tar zxp -C /tmp/blackfire \
+    && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
+    && rm -Rf /tmp/blackfire
+
+# install amqp extension
+RUN apt-get update -y \
+    && apt-get -y install gcc make autoconf libc-dev pkg-config \
+    && apt-get -y install libssl-dev librabbitmq-dev \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp
 
 #- ./.docker/php/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini
 COPY php-ini-overrides.ini /usr/local/etc/php/conf.d/99-overrides.ini
