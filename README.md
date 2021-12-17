@@ -14,4 +14,7 @@ pimcore:cache:clear
 # Calls "composer clearcache" and "composer update"
 composer:update
 
+# Calls "php -dxdebug.start_with_request=yes" for xdebug start instance
+phpx
+
 ```
