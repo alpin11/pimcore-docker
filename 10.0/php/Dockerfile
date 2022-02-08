@@ -111,7 +111,7 @@ ENV COMPOSER_MEMORY_LIMIT -1
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # MYSQL client
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8C718D3B5072E1F5
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 467B942D3A79BD29
 RUN echo "deb http://repo.mysql.com/apt/debian/ buster mysql-8.0" > /etc/apt/sources.list.d/mysql.list
 RUN apt-get update; \
     apt-get install -y --no-install-recommends mysql-client
