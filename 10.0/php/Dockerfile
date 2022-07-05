@@ -145,9 +145,9 @@ RUN mkdir -p /tmp/blackfire \
 # install amqp extension
 RUN apt-get update -y \
     && apt-get -y install gcc make autoconf libc-dev pkg-config \
-    && apt-get -y install libssl-dev librabbitmq-dev
-    # && pecl install amqp \
-    # && docker-php-ext-enable amqp
+    && apt-get -y install libssl-dev librabbitmq-dev \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp
 
 #- ./.docker/php/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini
 COPY php-ini-overrides.ini /usr/local/etc/php/conf.d/99-overrides.ini
