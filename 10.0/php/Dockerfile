@@ -21,6 +21,13 @@ RUN set -eux; \
     \
     docker-php-ext-install intl mbstring mysqli bcmath bz2 soap xsl pdo pdo_mysql fileinfo exif zip opcache;
 
+# Configure LDAP.
+RUN apt-get update \
+ && apt-get install libldap2-dev -y \
+ && rm -rf /var/lib/apt/lists/* \
+ && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+ && docker-php-ext-install ldap
+
 RUN wget http://www.imagemagick.org/download/ImageMagick.tar.gz; \
         tar -xvf ImageMagick.tar.gz; \
         cd ImageMagick-7.*; \
